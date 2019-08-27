@@ -45,19 +45,25 @@ Slist* add_head(Slist *list,int32_t data){
 	 // Node *node  = &snode;
 	*/
 	node->data = data;
-	if(list->head == NULL){
-		node->next = NULL;
-		list->tail = node;
-	}
-	else
-		node->next = list->head;
+	node->next = list->head;
 	list->head = node;
+	if(list->tail == NULL)
+		list->tail = node;
 	list->length++;
 	return list;
 }
 
 Slist* add_tail(Slist *list,int32_t data){
-
+	assert(list!=NULL);
+	//Create node
+	Node* node = (Node *) malloc(sizeof(Node));
+	node->data = data;
+	list->tail->next = node; //Point last node to the new node
+	if(list->head==NULL)
+		list->head = node;
+	list->tail = node;
+	list->length++;
+	return list;
 }
 
 
