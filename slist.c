@@ -18,8 +18,8 @@ int32_t lookup(Slist * list,int32_t data){
 	int32_t count = -1;
 	if(list->head != NULL){
 		count = 0;
-		Node tmp = list->head;
-		while(tmp!=null){
+		Node* tmp = list->head;
+		while(tmp!=NULL){
 			tmp->data == data;
 			count++;
 		}
