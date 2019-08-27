@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "slist.h"
 
@@ -28,6 +29,10 @@ int32_t lookup(Slist* list,int32_t data){
 			count++;
 			tmp = tmp->next;
 		}
+		// if(status){
+		// 	assert(list->length==3);
+		// 	assert(count==list->length);
+		// }
 		if(count == list->length){
 			count = -1;
 		}
@@ -68,15 +73,26 @@ Slist* add_tail(Slist *list,int32_t data){
 
 Slist* delete_tail(Slist *list){
 	assert(list!=NULL);
+	assert(list->head->data==10);
+	assert(list->tail->data==30);
 	Node* tmp = list->head;
 	Node* lstNode = list->tail;
-	while(tmp!= lstNode){
+	while(tmp->next!= lstNode){
 		tmp = tmp->next;
 	}
+	assert(list->head->data==10);
+	// assert(tmp->next->data == list->tail->data);
 	tmp->next = NULL;
+	list->tail = tmp;
+	list->length--;
 	free(lstNode);
 	return list;
+}
 
+Slist* delete_head(Slist *list){
+	assert(list!=NULL);
+	Node* tmp = list->head;
+	// if(list->)
 }
 
 
