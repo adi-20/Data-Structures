@@ -23,8 +23,7 @@ uint32_t length(Slist *list);
 int32_t lookup(Slist * list,int32_t data);
 Slist* add_head(Slist *list,int32_t data);
 Slist* add_tail(Slist *list,int32_t data);
-void print(Slist *list);
-// Slist* delete_tail(Slist *list);
+Slist* delete_tail(Slist *list);
 // Slist* delete_head(Slist *list);
 
 

@@ -27,6 +27,16 @@ void main(char *var){
 	assert (lookup(list ,20) == 1);
 	assert (lookup(list ,30) == 2);
 	assert (lookup(list ,50) == -1);
+
+	// Testing delete operation
+	assert(lookup(list,30)==(slist.length-1)); // check if 30 is last element using object
+	assert(lookup(list,30)==(list->length-1)); //check if 30 is last element
+	list = delete_tail(list);
+	assert(lookup(list,30)==-1); // check if last element is deleted
+
+	
+
+
 	
 }
 

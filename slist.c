@@ -66,4 +66,17 @@ Slist* add_tail(Slist *list,int32_t data){
 	return list;
 }
 
+Slist* delete_tail(Slist *list){
+	assert(list!=NULL);
+	Node* tmp = list->head;
+	Node* lstNode = list->tail;
+	while(tmp!= lstNode){
+		tmp = tmp->next;
+	}
+	tmp->next = NULL;
+	free(lstNode);
+	return list;
+
+}
+
 
