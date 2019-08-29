@@ -5,11 +5,14 @@
 
 #include "slist.h"
 
+
+
 Slist new_list(){
 	Slist* s =  (Slist *) malloc(sizeof(Slist));
 	s->head = NULL;
 	s->tail = NULL;
 	s->length = 0;
+	s->SLIST_STATUS = SLIST_OK;
 	return *s;
 }
 uint32_t length(Slist *list){
@@ -73,7 +76,7 @@ Slist* add_tail(Slist *list,int32_t data){
 Slist* delete_tail(Slist *list){
 	assert(list!=NULL);
 	Node* lstNode = list->tail;
-	if(list->length >0){
+	if(list->length!=0){
 		if(list->length != 1){
 			Node* tmp = list->head;
 			while(tmp->next!= lstNode){
@@ -87,14 +90,50 @@ Slist* delete_tail(Slist *list){
 		}
 		free(lstNode);
 		list->length--;
+		list->SLIST_STATUS = SLIST_OK;
+	}else{
+		
+		list->SLIST_STATUS = SLIST_FAIL;
+		assert(list->SLIST_STATUS==SLIST_FAIL);
 	}
 	return list;
 }
 
 Slist* delete_head(Slist *list){
 	assert(list!=NULL);
-	Node* tmp = list->head;
-	// if(list->)
+	if(list->head!=NULL){
+		Node* tmp = list->head;
+		Node* h_node = list->head;
+		tmp = tmp->next;
+		list->head = tmp;
+		if(tmp==NULL){
+			list->tail = NULL;
+		}
+		free(h_node);
+		list->length--;
+		list->SLIST_STATUS = SLIST_OK;
+	}else{
+		list->SLIST_STATUS = SLIST_FAIL;
+	}
+	return list;
 }
 
+int32_t max_list(Slist *list){
+	assert(list!=NULL);
+	int32_t max=-1;
+	if(list->head!=NULL){
+		max = list->head->data;
+		Node* tmp = list->head->next;
+		while(tmp!=NULL){
+			if(tmp->data > max){
+				max = tmp->data;
+			}
+			tmp = tmp->next;
+		}
+		list->SLIST_STATUS = SLIST_OK;
+	}else{
+		list->SLIST_STATUS = SLIST_FAIL;
+	}
+	return max;
+}
 
