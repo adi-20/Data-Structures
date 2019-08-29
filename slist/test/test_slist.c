@@ -72,7 +72,7 @@ void test_slist(){
 	assert(max_list(list)==-1);
 
 
-
+	// Max Slist test case
 	assert(list->SLIST_STATUS==SLIST_FAIL);
 	for (int i=1;i<4;i++){
 		list = add_head(list,i*10);
@@ -81,6 +81,8 @@ void test_slist(){
 	assert(length(list)==3);
 	assert(max_list(list)==30);
 	assert(list->SLIST_STATUS==SLIST_OK);
+	list = delete_head(list);
+	assert(max_list(list)==20);
 
 
 }

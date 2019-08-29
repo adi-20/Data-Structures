@@ -85,6 +85,7 @@ Slist* delete_tail(Slist *list){
 			tmp->next = NULL;
 			list->tail = tmp;
 		}else{
+			lstNode = list->head;
 			list->tail = NULL;
 			list->head = NULL;
 		}
