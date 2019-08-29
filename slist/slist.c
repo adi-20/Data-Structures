@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <stdio.h>
 
 #include "slist.h"
 
@@ -73,19 +72,22 @@ Slist* add_tail(Slist *list,int32_t data){
 
 Slist* delete_tail(Slist *list){
 	assert(list!=NULL);
-	assert(list->head->data==10);
-	assert(list->tail->data==30);
-	Node* tmp = list->head;
 	Node* lstNode = list->tail;
-	while(tmp->next!= lstNode){
-		tmp = tmp->next;
+	if(list->length >0){
+		if(list->length != 1){
+			Node* tmp = list->head;
+			while(tmp->next!= lstNode){
+				tmp = tmp->next;
+			}
+			tmp->next = NULL;
+			list->tail = tmp;
+		}else{
+			list->tail = NULL;
+			list->head = NULL;
+		}
+		free(lstNode);
+		list->length--;
 	}
-	assert(list->head->data==10);
-	// assert(tmp->next->data == list->tail->data);
-	tmp->next = NULL;
-	list->tail = tmp;
-	list->length--;
-	free(lstNode);
 	return list;
 }
 
