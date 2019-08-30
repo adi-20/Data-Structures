@@ -18,7 +18,7 @@ struct _slist {
 	Node *head;
 	Node *tail;
 	uint32_t length;
-	int SLIST_STATUS;
+	int32_t SLIST_STATUS;
 };
 
 /**	Public Interface for coder     **/
@@ -31,5 +31,7 @@ Slist* delete_tail(Slist *list);
 Slist* delete_head(Slist *list);
 int32_t max_list(Slist *list);
 int32_t min_list(Slist *list);
-
+Slist* add_after(Slist* list,int32_t data, int32_t after_data);
+Slist* delete_node(Slist* list, int32_t data);
+Slist* reverse_list(Slist* list);
 #endif
