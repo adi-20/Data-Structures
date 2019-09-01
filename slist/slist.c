@@ -1,6 +1,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>//Just for debugging
 #include <assert.h>
 
 #include "slist.h"
@@ -14,6 +15,12 @@ Slist new_list(){
 	s->length = 0;
 	s->SLIST_STATUS = SLIST_OK;
 	return *s;
+}
+Node* create_node(int32_t data,Node* ptr){
+	Node * node = (Node *) malloc(sizeof(Node));
+	node->data = data;
+	node->next = ptr;
+	return node;
 }
 uint32_t length(Slist *list){
 	return list->length;
@@ -63,11 +70,14 @@ Slist* add_head(Slist *list,int32_t data){
 Slist* add_tail(Slist *list,int32_t data){
 	assert(list!=NULL);
 	//Create node
-	Node* node = (Node *) malloc(sizeof(Node));
-	node->data = data;
-	list->tail->next = node; //Point last node to the new node
+	Node* node = create_node(data,NULL);
+	// Node* node = (Node *) malloc(sizeof(Node));
+	// node->data = data;
+	 //Point last node to the new node
 	if(list->head==NULL)
 		list->head = node;
+	else
+		list->tail->next = node;
 	list->tail = node;
 	list->length++;
 	return list;
@@ -165,9 +175,10 @@ Slist* add_after(Slist* list,int32_t data,int32_t after_data){
 		Node* tmp = list->head;
 		while(tmp!=NULL){
 			if(tmp->data == after_data){
-				Node* node = (Node*) malloc(sizeof(Node));
-				node->data = data;
-				node->next = tmp->next;
+				Node* node = create_node(data,tmp->next);
+				// Node* node = (Node*) malloc(sizeof(Node));
+				// node->data = data;
+				// node->next = tmp->next;
 				tmp->next = node;
 				list->length++;
 				list->SLIST_STATUS = SLIST_OK;
@@ -228,15 +239,130 @@ Slist* delete_node(Slist* list, int32_t data){
 }
 
 Slist* reverse_list(Slist* list){
-	Node* tmp= list->head;
-	Node* curr = tmp->next;
-	int count=1;
+	// Node* tmp= list->head;
+	// Node* curr = tmp->next;
+	// int count=1;
+	// while(curr!=NULL){
+	// 	Node* next = curr->next;
+	// 	curr->next = tmp;
+	// 	tmp = curr;
+	// 	count++;
+	// }
+	// assert(count==list->length-1);
+	Node* prev = list->head;
+	Node* curr = prev->next;
+	prev->next = NULL;
+	int count = 1;
 	while(curr!=NULL){
-		Node* next = curr->next;
-		curr->next = tmp;
-		tmp = curr;
+		Node* tmp = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = tmp;
 		count++;
 	}
-	assert(count==list->length-1);
+
+	// Swapping head and tail
+	Node* tmp = list->head;
+	list->head = list->tail;
+	list->tail = tmp;
+	assert(list->length == count); // count times while looped
+
+	
+	return list;
+}
+
+uint32_t list_equal(Slist* list1,Slist* list2){
+	// Create two separate single lists. Check two list are same.
+	// If the two lists have the same number of elements in the same order,
+	// then they are treated as same.
+	uint32_t flag = 1;
+	if(list1==NULL && list2== NULL){
+		flag = 1;
+	}else if(length(list1)==length(list2)){
+		Node* n1=list1->head;
+		Node* n2=list2->head;
+		for(int i = 0;i<list1->length;i++){
+			if(n1->data != n2->data){
+				flag = 0;
+			}
+		}
+	}else{
+		flag = 0;
+	}
+	return flag;
+
+}
+
+Slist* union_list(Slist* list1,Slist* list2){
+	assert(list1!=NULL);
+	assert(list2!=NULL);
+	Slist newList = new_list();
+	Slist* list = &newList;
+	
+	//add first list to return list
+	for(Node* curr = list1->head->next;curr!=NULL;curr=curr->next){
+		list=add_tail(list,curr->data);
+	}
+
+	// add second list to return list
+	for(Node* curr = list2->head->next;curr!=NULL;curr=curr->next){
+		list=add_tail(list,curr->data);
+	}
+	return list;
+}
+
+Slist* list_intersection(Slist* list1,Slist* list2){
+	assert(list1!=NULL);
+	assert(list2!=NULL);
+
+	Slist slist = new_list();
+	Slist *r_list = &slist;
+	for(Node* curr=list1->head;curr!=NULL;curr=curr->next){
+		if(lookup(list2,curr->data)!=-1){
+			
+		int32_t data = curr->data;
+		r_list = add_tail(r_list,data);
+		}
+	}
+
+	return r_list;
+}
+
+Slist* add_head_nexist(Slist* list,int32_t data){
+	// Create single list such that it should always contain unique elements. 
+	// Care should be taken that,if element is already present in the list, 
+	// you should not add it again.
+	if(lookup(list,data)==-1){
+		list = add_head(list,data);
+		list->SLIST_STATUS = SLIST_OK;
+	}else {
+		list->SLIST_STATUS = SLIST_FAIL;
+	}
+	return list;
+}
+
+Slist* add_tail_nexist(Slist* list,int32_t data){
+	// Create single list such that it should always contain unique elements. 
+	// Care should be taken that,if element is already present in the list, 
+	// you should not add it again.
+	if(lookup(list,data)==-1){
+		list = add_tail(list,data);
+		list->SLIST_STATUS = SLIST_OK;
+	}else {
+		list->SLIST_STATUS = SLIST_FAIL;
+	}
+	return list;
+}
+
+Slist* add_after_nexist(Slist* list,int32_t data,int32_t after){
+	// Create single list such that it should always contain unique elements. 
+	// Care should be taken that,if element is already present in the list, 
+	// you should not add it again.
+	if(lookup(list,data)==-1){
+		list = add_after(list,data,after);
+		list->SLIST_STATUS = SLIST_OK;
+	}else {
+		list->SLIST_STATUS = SLIST_FAIL;
+	}
 	return list;
 }
