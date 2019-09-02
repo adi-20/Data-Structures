@@ -33,9 +33,11 @@ uint32_t length(Dlist* list);
 OprResult* search_ele(Dlist* list,int32_t data);
 OprResult* add_head(Dlist* list,int32_t data);
 OprResult* add_tail(Dlist* list,int32_t data);
+OprResult* add_ele_before(Dlist* list,int32_t data,int32_t before);
+OprResult* add_ele_after(Dlist* list,int32_t data,int32_t after);
 OprResult* delete_head(Dlist* list);
 OprResult* delete_tail(Dlist* list);
-
+OprResult* delete_ele_before(Dlist*list,int32_t data);
 
 
 #endif

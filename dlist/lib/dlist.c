@@ -73,5 +73,103 @@ OprResult* add_tail(Dlist* list,int32_t data){
 	return create_result(data,STATUS_OK);
 
 }
-OprResult* delete_head(Dlist* list);
-OprResult* delete_tail(Dlist* list);
+// ----------------------Need To work----------------------
+OprResult* add_ele_before(Dlist* list,int32_t data,int32_t before){
+	assert(list!=NULL);
+	Node* curr = list->tail;
+	for(Node* curr = list->tail;curr!=NULL;curr=curr->prev){
+		if(curr->data == before){
+			Node* new_node = create_node(data,curr->prev,curr);
+			if(curr==list->head){
+				list->head = new_node;
+			}else{
+				curr->prev->next = new_node;
+			}
+			curr->prev = new_node;
+			list->length++;
+			return create_result(data,STATUS_OK);
+		}
+	}
+	// if element is not found
+	return create_result((-1),STATUS_FAIL);
+}
+
+OprResult* add_ele_after(Dlist* list,int32_t data,int32_t after){
+	assert(list!=NULL);
+	Node* curr = list->head;
+	for(Node* curr = list->head;curr!=NULL;curr=curr->next){
+		if(curr->data == after){
+			Node* new_node = create_node(data,curr,curr->next);
+			if(curr==list->tail){
+				list->tail = new_node;
+			}else{
+				curr->next->prev = new_node;
+			}
+			curr->next = new_node;
+			list->length++;
+			return create_result(data,STATUS_OK);
+		}
+	}
+	// if element is not found
+	return create_result(-1,STATUS_FAIL);
+}
+
+OprResult* delete_head(Dlist* list){
+	assert(list!=NULL);
+	Node* curr = list->head;
+	OprResult* result;
+	if(curr!=NULL){
+		if(length(list)==1){
+			list->head = NULL;
+			list->tail = NULL;
+		}else{
+			list->head = curr->next;
+			curr->next->prev = NULL;
+		}
+		result = create_result(curr->data,STATUS_OK);
+		free(curr);
+		list->length--;
+	}else{
+		result = create_result(-1,STATUS_FAIL);
+	}
+	return result;
+}
+OprResult* delete_tail(Dlist* list){
+	assert(list!=NULL);
+	Node* curr = list->tail;
+	OprResult* result;
+	if(curr!=NULL){
+		if(length(list)==1){
+			list->head = NULL;
+			list->tail = NULL;
+		}else{
+			list->tail = curr->prev;
+			curr->prev->next = NULL;
+		}
+		result = create_result(curr->data,STATUS_OK);
+		free(curr);
+		list->length--;
+	}else{
+		result = create_result(-1,STATUS_FAIL);
+	}
+	return result;
+}
+
+OprResult* delete_ele_before(Dlist*list,int32_t data){
+	assert(list!=NULL);
+	OprResult* returnVal = create_result(-1,STATUS_FAIL);
+	for(Node* curr=list->tail;curr!=NULL;curr=curr->prev){
+		if(curr->data==data){
+			if(curr->prev!=NULL){
+				Node* free_node = curr->prev;
+				curr->prev = free_node->prev;
+				returnVal->data = free_node->data;
+				returnVal->STATUS = STATUS_OK;
+				free(free_node);
+				list->length--;
+				break;
+			}
+		}
+	}
+	return returnVal;
+}
