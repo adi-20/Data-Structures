@@ -40,6 +40,5 @@ Slist* list_intersection(Slist* list1,Slist* list2);
 Slist* add_head_nexist(Slist* list,int32_t data);
 Slist* add_tail_nexist(Slist* list,int32_t data);
 Slist* add_after_nexist(Slist* list,int32_t data,int32_t after);
-void free_list(Slist* list);
 
 #endif
