@@ -319,9 +319,8 @@ Slist* list_intersection(Slist* list1,Slist* list2){
 	Slist *r_list = &slist;
 	for(Node* curr=list1->head;curr!=NULL;curr=curr->next){
 		if(lookup(list2,curr->data)!=-1){
-			
 		int32_t data = curr->data;
-		r_list = add_tail(r_list,data);
+		r_list = add_tail_nexist(r_list,data);
 		}
 	}
 
