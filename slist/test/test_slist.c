@@ -312,14 +312,18 @@ void test_intersection(){
 	i_list = list_intersection(list1,list2);
 	
 	assert(length(i_list)==1);
+	list1 = add_tail(list1,100);
+	i_list = list_intersection(list1,list2);
+	assert(length(i_list)==1);
 
 	list1 = add_tail(list1,150);
 	i_list = list_intersection(list1,list2);
 	
 	assert(length(i_list)==2);
 
-	delete_head(list1);
-	delete_tail(list1);
+	delete_head(list1);// remove 100 in head
+	delete_tail(list1);// remove 150 in tail
+	delete_tail(list1);//remove 100 in tail
 	i_list = list_intersection(list1,list2);
 	assert(length(i_list)==0);
 }
