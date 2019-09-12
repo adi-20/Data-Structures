@@ -7,15 +7,16 @@ OprResult* push(Queue* q,int32_t data){
 	return add(q,data);
 }
 
-OprResult* pop(Queue* q){
+Queue* pop(Queue* q){
 	int len = length(q);
 	OprResult* res = NULL;
+	Queue* q2 = create_queue(q->size);
 	for(int i =0;i<len-1;i++){
 		res = delete(q);
-		add(q,res->data);
+		add(q2,res->data);
 	}
 	res = delete(q);
-	return res;
+	return q2;
 }
 
 
@@ -26,15 +27,10 @@ void main(){
 	res = push(q,2);
 	res = push(q,3);
 	res = push(q,4);
-	res = pop(q);
-
-	assert(res->status==STATUS_OK);
-	assert(res->data==4);
-
-	res = pop(q);
-
-	assert(res->status==STATUS_OK);
-	assert(res->data==3);
-
+	assert(length(q)==4);
+	q = pop(q);
+	assert(length(q)==3);
+	q = pop(q);
+	assert(length(q)==2);
 
 }
