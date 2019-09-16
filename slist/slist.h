@@ -8,6 +8,7 @@
 
 typedef struct _node Node;
 typedef struct _slist Slist;
+typedef struct _opr_result_ OprResult;
 
 struct _node {
 	int32_t data;
@@ -21,18 +22,23 @@ struct _slist {
 	int32_t SLIST_STATUS;
 };
 
+struct _opr_result_{
+	uint32_t status;
+	int32_t data;
+};
+
 /**	Public Declaration for coder     **/
 Slist new_list();
 uint32_t length(Slist *list);
 int32_t lookup(Slist * list,int32_t data);
 Slist* add_head(Slist *list,int32_t data);
 Slist* add_tail(Slist *list,int32_t data);
-Slist* delete_tail(Slist *list);
-Slist* delete_head(Slist *list);
+OprResult* delete_tail(Slist *list);
+OprResult* delete_head(Slist *list);
 int32_t max_list(Slist *list);
 int32_t min_list(Slist *list);
 Slist* add_after(Slist* list,int32_t data, int32_t after_data);
-Slist* delete_node(Slist* list, int32_t data);
+OprResult* delete_node(Slist* list, int32_t data);
 Slist* reverse_list(Slist* list);
 uint32_t list_equal(Slist* list1,Slist* list2);
 Slist* union_list(Slist* list1,Slist* list2);

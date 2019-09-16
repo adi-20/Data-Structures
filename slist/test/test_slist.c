@@ -50,27 +50,31 @@ void test_add_tail(){
 }
 void test_delete_tail(){
 	Slist slist = new_list();
+	
 	Slist *list = &slist;
+	OprResult* res = NULL;
 	list = add_head(list,20);
 	list = add_head(list,10);
 	list = add_tail(list,30);
 
-	// Testing delete operation
+	// Testing 	te operation
 	assert(lookup(list,30)==(list->length-1)); //check if 30 is last element
 	assert(list->tail->data==30);
-	list = delete_tail(list);
+	res = delete_tail(list);
+	assert(res->status==SLIST_OK);
+	assert(res->data==30);
 	assert(lookup(list,30)!=(list->length-1));
 	assert(lookup(list,30)==-1); // check if last element is deleted
 	// deleting all elements from list
 	int len = list->length;
 	for(int i=0;i<len;i++){
-		list = delete_tail(list);
+		res = delete_tail(list);
 	}
 	//list should be empty
 	assert(lookup(list,10)==-1);
 	assert(length(list)==0);
-	list = delete_tail(list);
-	assert(list->SLIST_STATUS==SLIST_FAIL);
+	res = delete_tail(list);
+	assert(res->status==SLIST_FAIL);
 	
 	
 }
@@ -78,6 +82,7 @@ void test_delete_tail(){
 void test_delete_head(){
 	Slist slist = new_list();
 	Slist *list = &slist;
+	OprResult* res = NULL;
 	list = add_head(list,10);
 	list = add_head(list,20);
 	list = add_head(list,30);
@@ -85,18 +90,20 @@ void test_delete_head(){
 
 	assert(lookup(list,30)==0);
 	assert(length(list)==3);
-	list = delete_head(list);	
+	res = delete_head(list);	
+	assert(res->status==SLIST_OK);
+	assert(res->data==30);
 	assert(lookup(list,30)==-1);
 	assert(length(list)==2);
-	list = delete_head(list);
+	res = delete_head(list);
 	assert(lookup(list,20)==-1);
 	assert(length(list)==1);
-	assert(list->SLIST_STATUS==SLIST_OK);
-	list = delete_head(list);
+	assert(res->status==SLIST_OK);
+	res = delete_head(list);
 	assert(lookup(list,10)==-1);
 	assert(length(list)==0);
-	list = delete_head(list);
-	assert(list->SLIST_STATUS==SLIST_FAIL);
+	res = delete_head(list);
+	assert(res->status==SLIST_FAIL);
 	assert(length(list)==0);
 }
 
@@ -118,17 +125,17 @@ void test_min_max(){
 	assert(max_list(list)==50);
 	assert(min_list(list)==10);
 	assert(list->SLIST_STATUS==SLIST_OK);
-	list = delete_head(list);
+	delete_head(list);
 	assert(max_list(list)==40);
 	assert(min_list(list)==10);
-	list = delete_tail(list);
+	delete_tail(list);
 	assert(max_list(list)==40);
 	assert(min_list(list)==20);
 	assert(list->SLIST_STATUS==SLIST_OK);
 	assert(list->length == 3);
 	int len = list->length;
 	for(int i=1;i<=len;i++){
-		list = delete_tail(list);
+		delete_tail(list);
 	}
 	assert(list->length==0);
 	assert(list->head == NULL);
@@ -164,33 +171,34 @@ void test_add_after(){
 void test_del_data(){
 	Slist slist = new_list();
 	Slist *list = &slist;
+	OprResult* res = NULL;
 	for(int i=1;i<10;i++){
 		list = add_head(list,i*10);
 	}
 
 	//Delete element doens't exist
-	list = delete_node(list,100);
-	assert(list->SLIST_STATUS == SLIST_FAIL);
-	list->SLIST_STATUS  = SLIST_OK;
+	res = delete_node(list,100);
+	assert(res->status== SLIST_FAIL);
+	res->status  = SLIST_OK;
 
 	//Delete element which is in mid
 	assert(lookup(list,20)== list->length-2);
 	assert(lookup(list,30)== list->length-3);
-	list = delete_node(list,20);
-	assert(list->SLIST_STATUS == SLIST_OK);
+	res = delete_node(list,20);
+	assert(res->status== SLIST_OK);
 	assert(lookup(list,20)==-1);
 	assert(lookup(list,30)== list->length-2);
 
 	// delete tail
 	assert(lookup(list,10)== list->length-1);
-	list = delete_node(list,10);
-	assert(list->SLIST_STATUS == SLIST_OK);
+	res = delete_node(list,10);
+	assert(res->status == SLIST_OK);
 	assert(lookup(list,10)==-1);
 
 	// Delete Head
 	assert(lookup(list,90)==0);
-	list = delete_node(list,90);
-	assert(list->SLIST_STATUS == SLIST_OK);
+	res = delete_node(list,90);
+	assert(res->status == SLIST_OK);
 	assert(lookup(list,90)==-1);
 }
 
@@ -247,19 +255,19 @@ void test_cmd_lists(){
 	assert(list_equal(list1,list2)==1);
 	
 	//delete a element and check if returns 0
-	list1 = delete_tail(list1);
+	delete_tail(list1);
 	assert(list_equal(list1,list2)==0);
 
 	//delete a element and check if both are same
-	list2 = delete_tail(list2);
+	delete_tail(list2);
 	assert(list_equal(list1,list2)==1);
-	list2 = delete_head(list2);
+	delete_head(list2);
 	assert(list_equal(list1,list2)==0);
-	list1 = delete_head(list1);
+	delete_head(list1);
 	assert(list_equal(list1,list2)==1);
-	list1 = delete_node(list1,70);
+	delete_node(list1,70);
 	assert(list_equal(list1,list2)==0);
-	list2 = delete_node(list2,70);
+	delete_node(list2,70);
 	assert(list_equal(list1,list2)==1);
 	list1 = reverse_list(list1);
 	assert(list_equal(list1,list2)==0);

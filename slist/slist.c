@@ -22,6 +22,11 @@ Node* create_node(int32_t data,Node* ptr){
 	node->next = ptr;
 	return node;
 }
+OprResult* create_result(int32_t status){
+	OprResult* res = (OprResult*) malloc(sizeof(OprResult));
+	res->status = status;
+	return res;
+}
 uint32_t length(Slist *list){
 	return list->length;
 }
@@ -83,9 +88,10 @@ Slist* add_tail(Slist *list,int32_t data){
 	return list;
 }
 
-Slist* delete_tail(Slist *list){
+OprResult* delete_tail(Slist *list){
 	assert(list!=NULL);
 	Node *lstNode = list->tail;
+	OprResult* res = create_result(SLIST_FAIL);
 	if(list->length!=0){
 		if(list->head != list->tail){
 			Node* tmp = list->head;
@@ -99,19 +105,20 @@ Slist* delete_tail(Slist *list){
 			list->tail = NULL;
 			list->head = NULL;
 		}
+		res->data= lstNode->data;
+		res->status = SLIST_OK;
 		free(lstNode);
 		list->length--;
 		list->SLIST_STATUS = SLIST_OK;
 	}else{
-		
-		list->SLIST_STATUS = SLIST_FAIL;
-		assert(list->SLIST_STATUS==SLIST_FAIL);
+		res->status = SLIST_FAIL;
 	}
-	return list;
+	return res;
 }
 
-Slist* delete_head(Slist *list){
+OprResult* delete_head(Slist *list){
 	assert(list!=NULL);
+	OprResult* res = create_result(SLIST_FAIL);
 	if(list->head!=NULL){
 		Node* tmp = list->head;
 		Node* h_node = list->head;
@@ -120,13 +127,12 @@ Slist* delete_head(Slist *list){
 		if(tmp==NULL){
 			list->tail = NULL;
 		}
+		res->data = h_node->data;
+		res->status = SLIST_OK;
 		free(h_node);
 		list->length--;
-		list->SLIST_STATUS = SLIST_OK;
-	}else{
-		list->SLIST_STATUS = SLIST_FAIL;
 	}
-	return list;
+	return res;
 }
 
 int32_t max_list(Slist *list){
@@ -198,9 +204,9 @@ Slist* add_after(Slist* list,int32_t data,int32_t after_data){
 	return list;
 }
 
-Slist* delete_node(Slist* list, int32_t data){
+OprResult* delete_node(Slist* list, int32_t data){
 	assert(list!=NULL);
-	list->SLIST_STATUS = SLIST_FAIL;
+	OprResult* res = create_result(SLIST_FAIL);
 	if(list->head!= NULL){
 		if(list->head != list->tail){
 			Node* prev = NULL;
@@ -216,26 +222,27 @@ Slist* delete_node(Slist* list, int32_t data){
 					}else{
 						prev->next = curr->next;
 					}
+					res->data = curr->data;
+					res->status = SLIST_OK;
 					free(curr);
 					list->length--;
-					list->SLIST_STATUS = SLIST_OK;
 					break;
 				}
 				prev = curr;
 				curr = curr->next;
 			}
 			if(curr==list->tail){
-				list->SLIST_STATUS = SLIST_FAIL;
+				res->status = SLIST_FAIL;
 			}
 		}else{
 			if(list->head->data==data){
-				list->SLIST_STATUS = SLIST_OK;
+				res->status = SLIST_OK;
 				list->head = NULL;
 				list->tail = NULL;
 			}
 		}
 	}
-	return list;
+	return res;
 }
 
 Slist* reverse_list(Slist* list){
