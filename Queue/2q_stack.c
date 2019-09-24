@@ -3,7 +3,7 @@
 
 #include "queue.h"
 
-OprResult* push(Queue* q,int32_t data){
+OprResult* push(Queue* q,DATA_TYPE_USED data){
 	return add(q,data);
 }
 

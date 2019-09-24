@@ -5,13 +5,13 @@
 #define SLIST_OK 1
 
 #include<stdint.h>
+#include "../comm.h"
 
 typedef struct _node Node;
 typedef struct _slist Slist;
-typedef struct _opr_result_ OprResult;
 
 struct _node {
-	int32_t data;
+	DATA_TYPE_USED data;
 	Node *next;
 };
 
@@ -22,29 +22,24 @@ struct _slist {
 	int32_t SLIST_STATUS;
 };
 
-struct _opr_result_{
-	uint32_t status;
-	int32_t data;
-};
-
 /**	Public Declaration for coder     **/
 Slist new_list();
 uint32_t length(Slist *list);
-int32_t lookup(Slist * list,int32_t data);
-Slist* add_head(Slist *list,int32_t data);
-Slist* add_tail(Slist *list,int32_t data);
+int32_t lookup(Slist * list,DATA_TYPE_USED data);
+Slist* add_head(Slist *list,DATA_TYPE_USED data);
+Slist* add_tail(Slist *list,DATA_TYPE_USED data);
 OprResult* delete_tail(Slist *list);
 OprResult* delete_head(Slist *list);
-int32_t max_list(Slist *list);
-int32_t min_list(Slist *list);
-Slist* add_after(Slist* list,int32_t data, int32_t after_data);
-OprResult* delete_node(Slist* list, int32_t data);
+DATA_TYPE_USED max_list(Slist *list);
+DATA_TYPE_USED min_list(Slist *list);
+Slist* add_after(Slist* list,DATA_TYPE_USED data, DATA_TYPE_USED after_data);
+OprResult* delete_node(Slist* list, DATA_TYPE_USED data);
 Slist* reverse_list(Slist* list);
 uint32_t list_equal(Slist* list1,Slist* list2);
 Slist* union_list(Slist* list1,Slist* list2);
 Slist* list_intersection(Slist* list1,Slist* list2);
-Slist* add_head_nexist(Slist* list,int32_t data);
-Slist* add_tail_nexist(Slist* list,int32_t data);
-Slist* add_after_nexist(Slist* list,int32_t data,int32_t after);
+Slist* add_head_nexist(Slist* list,DATA_TYPE_USED data);
+Slist* add_tail_nexist(Slist* list,DATA_TYPE_USED data);
+Slist* add_after_nexist(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after);
 
 #endif

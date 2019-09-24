@@ -12,17 +12,17 @@ Dlist* create_list(){
 	return list;
 }
 
-Node* create_node(int32_t data,Node* prev, Node* next){
+Node* create_node(DATA_TYPE_USED data,Node* prev, Node* next){
 	Node* node = (Node*) malloc(sizeof(Node));
 	node->data = data;
 	node->prev = prev;
 	node->next = next;
 	return node;
 }
-OprResult* create_result(int32_t data, uint32_t status){
+OprResult* create_result(DATA_TYPE_USED data, uint32_t status){
 	OprResult* result = (OprResult*) malloc(sizeof(OprResult));
 	result->data = data;
-	result->STATUS = status;
+	result->status = status;
 	return result;
 }
 
@@ -31,7 +31,7 @@ uint32_t length(Dlist* list){
 	return list->length;
 }
 
-OprResult* search_ele(Dlist* list,int32_t data){
+OprResult* search_ele(Dlist* list,DATA_TYPE_USED data){
 	assert(list!=NULL);
 	int32_t pos = -1;
 	Node* curr = list->head;
@@ -45,7 +45,7 @@ OprResult* search_ele(Dlist* list,int32_t data){
 	return create_result(pos,STATUS_OK);
 }
 
-OprResult* add_head(Dlist* list,int32_t data){
+OprResult* add_head(Dlist* list,DATA_TYPE_USED data){
 	assert(list!=NULL);
 	Node* curr = list->head;
 	Node* new_node = create_node(data,NULL,curr);
@@ -59,7 +59,7 @@ OprResult* add_head(Dlist* list,int32_t data){
 	list->length++;
 	return create_result(data,STATUS_OK);
 }
-OprResult* add_tail(Dlist* list,int32_t data){
+OprResult* add_tail(Dlist* list,DATA_TYPE_USED data){
 	assert(list!=NULL);
 	Node* curr = list->tail;
 	Node* new_node = create_node(data,curr,NULL);
@@ -74,7 +74,7 @@ OprResult* add_tail(Dlist* list,int32_t data){
 
 }
 // ----------------------Need To work----------------------
-OprResult* add_ele_before(Dlist* list,int32_t data,int32_t before){
+OprResult* add_ele_before(Dlist* list,DATA_TYPE_USED data,DATA_TYPE_USED before){
 	assert(list!=NULL);
 	Node* curr = list->tail;
 	for(Node* curr = list->tail;curr!=NULL;curr=curr->prev){
@@ -94,7 +94,7 @@ OprResult* add_ele_before(Dlist* list,int32_t data,int32_t before){
 	return create_result((-1),STATUS_FAIL);
 }
 
-OprResult* add_ele_after(Dlist* list,int32_t data,int32_t after){
+OprResult* add_ele_after(Dlist* list,DATA_TYPE_USED data,DATA_TYPE_USED after){
 	assert(list!=NULL);
 	Node* curr = list->head;
 	for(Node* curr = list->head;curr!=NULL;curr=curr->next){
@@ -155,7 +155,7 @@ OprResult* delete_tail(Dlist* list){
 	return result;
 }
 
-OprResult* delete_ele_before(Dlist*list,int32_t data){
+OprResult* delete_ele_before(Dlist*list,DATA_TYPE_USED data){
 	assert(list!=NULL);
 	OprResult* returnVal = create_result(-1,STATUS_FAIL);
 	for(Node* curr=list->tail;curr!=NULL;curr=curr->prev){
@@ -164,7 +164,7 @@ OprResult* delete_ele_before(Dlist*list,int32_t data){
 				Node* free_node = curr->prev;
 				curr->prev = free_node->prev;
 				returnVal->data = free_node->data;
-				returnVal->STATUS = STATUS_OK;
+				returnVal->status = STATUS_OK;
 				free(free_node);
 				list->length--;
 				break;

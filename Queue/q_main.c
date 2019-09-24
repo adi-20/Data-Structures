@@ -57,7 +57,7 @@ void t_c_del(){
 }
 
 
-void main(){
+int main(int c, char **v){
 	t_c_queu();
 	t_c_add();
 	t_c_del();

@@ -16,7 +16,7 @@ Slist new_list(){
 	s->SLIST_STATUS = SLIST_OK;
 	return *s;
 }
-Node* create_node(int32_t data,Node* ptr){
+Node* create_node(DATA_TYPE_USED data,Node* ptr){
 	Node * node = (Node *) malloc(sizeof(Node));
 	node->data = data;
 	node->next = ptr;
@@ -31,7 +31,7 @@ uint32_t length(Slist *list){
 	return list->length;
 }
 
-int32_t lookup(Slist* list,int32_t data){
+int32_t lookup(Slist* list,DATA_TYPE_USED data){
 	assert(list != NULL);
 	int32_t count = -1;
 	if(list->head != NULL){
@@ -54,7 +54,7 @@ int32_t lookup(Slist* list,int32_t data){
 	return count;
 }
 
-Slist* add_head(Slist *list,int32_t data){
+Slist* add_head(Slist *list,DATA_TYPE_USED data){
 	 assert(list!=NULL);
 	// Create Node
 	Node * node = (Node *) malloc(sizeof(Node));
@@ -72,7 +72,7 @@ Slist* add_head(Slist *list,int32_t data){
 	return list;
 }
 
-Slist* add_tail(Slist *list,int32_t data){
+Slist* add_tail(Slist *list,DATA_TYPE_USED data){
 	assert(list!=NULL);
 	//Create node
 	Node* node = create_node(data,NULL);
@@ -135,9 +135,9 @@ OprResult* delete_head(Slist *list){
 	return res;
 }
 
-int32_t max_list(Slist *list){
+DATA_TYPE_USED max_list(Slist *list){
 	assert(list!=NULL);
-	int32_t max=-1;
+	DATA_TYPE_USED max=-1;
 	if(list->head!=NULL){
 		max = list->head->data;
 		Node* tmp = list->head->next;
@@ -154,9 +154,9 @@ int32_t max_list(Slist *list){
 	return max;
 }
 
-int32_t min_list(Slist *list){
+DATA_TYPE_USED min_list(Slist *list){
 	assert(list!=NULL);
-	int32_t min = -1;
+	DATA_TYPE_USED min = -1;
 	if(list->head!=NULL){
 		min = list->head->data;
 		Node* tmp = list->head->next;
@@ -172,7 +172,7 @@ int32_t min_list(Slist *list){
 	}
 	return min;
 }
-Slist* add_after(Slist* list,int32_t data,int32_t after_data){
+Slist* add_after(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after_data){
 	assert(list!=NULL);
 	int count = -1;
 	if(list->head != NULL){
@@ -204,7 +204,7 @@ Slist* add_after(Slist* list,int32_t data,int32_t after_data){
 	return list;
 }
 
-OprResult* delete_node(Slist* list, int32_t data){
+OprResult* delete_node(Slist* list, DATA_TYPE_USED data){
 	assert(list!=NULL);
 	OprResult* res = create_result(SLIST_FAIL);
 	if(list->head!= NULL){
@@ -334,7 +334,7 @@ Slist* list_intersection(Slist* list1,Slist* list2){
 	return r_list;
 }
 
-Slist* add_head_nexist(Slist* list,int32_t data){
+Slist* add_head_nexist(Slist* list,DATA_TYPE_USED data){
 	// Create single list such that it should always contain unique elements. 
 	// Care should be taken that,if element is already present in the list, 
 	// you should not add it again.
@@ -347,7 +347,7 @@ Slist* add_head_nexist(Slist* list,int32_t data){
 	return list;
 }
 
-Slist* add_tail_nexist(Slist* list,int32_t data){
+Slist* add_tail_nexist(Slist* list,DATA_TYPE_USED data){
 	// Create single list such that it should always contain unique elements. 
 	// Care should be taken that,if element is already present in the list, 
 	// you should not add it again.
@@ -360,7 +360,7 @@ Slist* add_tail_nexist(Slist* list,int32_t data){
 	return list;
 }
 
-Slist* add_after_nexist(Slist* list,int32_t data,int32_t after){
+Slist* add_after_nexist(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after){
 	// Create single list such that it should always contain unique elements. 
 	// Care should be taken that,if element is already present in the list, 
 	// you should not add it again.

@@ -5,14 +5,14 @@
 #define STATUS_FAIL 0
 
 #include <stdint.h>
+#include "../../comm.h"
 
 typedef struct __node__ Node;
 typedef struct __dlist__ Dlist;
-typedef struct __result__ OprResult;
 
 struct __node__{
 	Node* prev;
-	int32_t data;
+	DATA_TYPE_USED data;
 	Node* next;
 };
 
@@ -22,22 +22,17 @@ struct __dlist__{
 	uint32_t length;
 };
 
-struct __result__{
-	int32_t data;
-	uint32_t STATUS;
-};
-
 // Defining methods for double linked list
 Dlist* create_list();
 uint32_t length(Dlist* list);
-OprResult* search_ele(Dlist* list,int32_t data);
-OprResult* add_head(Dlist* list,int32_t data);
-OprResult* add_tail(Dlist* list,int32_t data);
-OprResult* add_ele_before(Dlist* list,int32_t data,int32_t before);
-OprResult* add_ele_after(Dlist* list,int32_t data,int32_t after);
+OprResult* search_ele(Dlist* list,DATA_TYPE_USED data);
+OprResult* add_head(Dlist* list,DATA_TYPE_USED data);
+OprResult* add_tail(Dlist* list,DATA_TYPE_USED data);
+OprResult* add_ele_before(Dlist* list,DATA_TYPE_USED data,DATA_TYPE_USED before);
+OprResult* add_ele_after(Dlist* list,DATA_TYPE_USED data,DATA_TYPE_USED after);
 OprResult* delete_head(Dlist* list);
 OprResult* delete_tail(Dlist* list);
-OprResult* delete_ele_before(Dlist*list,int32_t data);
+OprResult* delete_ele_before(Dlist*list,DATA_TYPE_USED data);
 
 
 #endif

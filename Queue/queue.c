@@ -26,7 +26,7 @@ uint32_t length(Queue* q){
 	return q->length;
 }
 
-OprResult* add(Queue* q,uint32_t data){
+OprResult* add(Queue* q,DATA_TYPE_USED data){
 	assert(q!=NULL);
 	OprResult* res = NULL;
 	if(q->length+1 > q->size){
@@ -48,7 +48,7 @@ OprResult* delete(Queue* q){
 	if(q->length==0){
 		res = create_result(STATUS_FAIL);
 	}else{
-		int data = q->data[q->bottom];
+		DATA_TYPE_USED data = q->data[q->bottom];
 		q->length--;
 		int bottom = q->bottom;
 		q->bottom = (q->bottom+1)%(q->size);

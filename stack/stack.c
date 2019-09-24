@@ -14,7 +14,7 @@ OprResult create_result(){
 
 }
 
-OprResult push(Stack* stck, int32_t data){
+OprResult push(Stack* stck, DATA_TYPE_USED data){
 	stck.add_head((Slist*)stck,data);
 }
 OprResult pop(Stack* stck){
