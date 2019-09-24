@@ -5,67 +5,64 @@ To Compile : gcc -Wall  -D DATA_TYPE_USED=char ../slist/slist.c -o test1
 */
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "../slist/slist.h"
 #include "../stack/stack.h"
 
 int remove_till_close(Stack* stck,char ele){
     int flag = 0;
-    while(stck->length >0){
-        OprResult* res =pop(stck);
-        switch(res->data){
-            case '{':
-            case '[':
-            case '(':
-                if(ele == res->data){
-                    flag = 1;
-                    break;
-                }else{
-                    flag = -1;
-                }
-        }
+    OprResult* res =pop(stck);
+    if(res->status == STATUS_OK && res->data == ele){
+        flag = 1;
     }
     return flag;
 }
 
-int main(int c,char** v){
-    char ch[30];
-    printf("[+] Enter expression: ");
-    scanf("%s",ch);
+int validate_exp(char ch[]){
+    int flag =1;
     Stack stck = create_stack();
     Stack *stack = &stck;
     for(int i=0;i<strlen(ch);i++){
-        char rm;
+        char rm=' ';
         switch(ch[i]){
             //Checking for closing...
             case '}':
                 rm = '{';
+                break;
             case ']':
                 rm = '[';
+                break;
             case ')':
                 rm = '(';
-                if(remove_till_close(stack,rm)!=1){
-                    printf("\n[-] Invalid Expression!!! \n");
-                    return 0;
-                }
                 break;
-            // Pushing all other to the stack
-            default:
-                push(stack,ch[i]);
-        }
-    }
-
-    /// Poping all elements to validate for any braces remaining
-    while(stack->length >0){
-        OprResult* res =pop(stack);
-        switch(res->data){
             case '{':
             case '[':
             case '(':
-                printf("\n[-] Invalid Expression!!! \n");
-                return 0;
+                push(stack,ch[i]);
+                break;
+            // Pushing all other to the stack
+                
         }
+        if(rm!=' ' && remove_till_close(stack,rm)!=1){
+            flag = 0;
+            break;
+        }
+        rm = ' ';
     }
-    
-    printf("\n[+] Valid Expression");
+
+    return flag;
+}
+
+int main(int c,char** v){
+    assert(validate_exp("({})")==1);
+    assert(validate_exp("({)")==0);
+
+    assert(validate_exp("(asd{asda}asd)")==1);
+
+    assert(validate_exp("asd({asd)")==0);
+
+    assert(validate_exp("{{}}")==1);
+
+    assert(validate_exp("({)}")==0);
 }
