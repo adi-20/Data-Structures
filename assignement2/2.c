@@ -4,11 +4,12 @@ Hint: When number is seen, it is pushed onto the stack; when an operator is seen
 is applied to the two numbers that are popped from the stack, and the result is pushed onto the
 stack.
 
-To Compile : gcc -Wall ../slist/slist.c ../stack/s_ll.c 2.c -o test2
+To Compile : gcc -Wall  ../slist/slist.c ../stack/s_ll.c 2.c
 */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "../slist/slist.h"
 #include "../stack/stack.h"
@@ -24,7 +25,9 @@ int32_t perform_operation(Stack* stack,char opr){
     OprResult* data1 = pop(stack);
     OprResult* data2 = pop(stack);
     int flag = 0;
-    if(data2->status==STATUS_OK){
+    // printf("\ndata1 :: %d :: %d",data1->data,data1->status);
+    // printf("\ndata2 :: %d :: %d",data2->data,data2->status);
+    if(data1->status==STATUS_OK && data2->status==STATUS_OK){
         switch(opr){
             case '+':
                 push(stack,data1->data + data2->data);
@@ -46,13 +49,11 @@ int32_t perform_operation(Stack* stack,char opr){
     return flag;
 
 }
-int main(int c,char** v){
-    char ch[100];
-    printf("[+] Enter Postfix Expression: ");
-    // scanf("%s",ch);
-    fgets(ch,sizeof ch, stdin);
+OprResult* evaluate_postfix(char ch[]){
+    OprResult* res = (OprResult*) malloc(sizeof(OprResult));
     Stack stck = create_stack();
     Stack *stack = &stck;
+    int test = 0;
     int from=0;
     for(int i=0;i<strlen(ch);i++){
         switch(ch[i]){
@@ -61,19 +62,50 @@ int main(int c,char** v){
             case '-':
             case '/':
             case '*':
-                if(perform_operation(stack,ch[i])!=1){
-                    printf("[-] Invalid Postfix Expression!!!");
-                    return 0;
+                test = perform_operation(stack,ch[i]);
+                if(test!=1){
+                    res->status = STATUS_FAIL;
+                    return res;
                 }
+                from = i+1;
                 break;
             // Pushing all other to the stack
             case ' ':
-                push(stack,substr_int(ch,from,i));
-                from = i+1;
+                if(from==i && ch[i]==' '){
+                    
+                }else{
+                    push(stack,substr_int(ch,from,i));
+                    from = i+1;
+                }
                 break;
                 
         }
     }
-    printf("\n[+] Successfully calculated : %d",peek(stack)->data);
-    printf("\n[+] Valid Expression");
+    if(stack->length>1){
+        res->status = STATUS_FAIL;
+    }else{
+        res->data = peek(stack)->data;
+        res->status = STATUS_OK;
+    }
+    
+    return res;
+}
+int main(int c,char** v){
+    // printf("%d\n",evaluate_postfix("12 3 +")->status);
+    OprResult* res;
+    assert(evaluate_postfix("12 3 +")->data==15);
+    assert(evaluate_postfix("12 3 +")->status==STATUS_OK);
+    assert(evaluate_postfix("12 3 ")->status==STATUS_FAIL);
+    assert(evaluate_postfix("100 3 +")->data==103);
+    assert(evaluate_postfix("100 3 +")->status==STATUS_OK);
+    assert(evaluate_postfix("12 3 + +")->status==STATUS_FAIL);
+    res = evaluate_postfix("12 3 + 4 +");
+    assert(res->status==STATUS_OK);
+    assert(res->data==19);
+    res = evaluate_postfix("1 1 12 3 + 1 * + 4 + *");
+    assert(res->status==STATUS_OK);
+    assert(res->data==20);
+    res = evaluate_postfix("6 5 2 3 + 8 * + 3 + *");
+    assert(res->status==STATUS_OK);
+    assert(res->data==288);
 }

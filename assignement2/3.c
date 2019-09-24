@@ -9,4 +9,10 @@
 */
 #include <stdio.h>
 #include "support_3.h"
-#include "../"
+#define DATA_TYPE_USED Process
+#include "../Queue/queue.h"
+
+int main(int var,char **ch){
+    printf("Hello World");
+    
+}

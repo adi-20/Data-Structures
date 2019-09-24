@@ -1,15 +1,23 @@
 #ifndef _PROCESS_STRUCTURE_
 #define _PROCESS_STRUCTURE_
-#include <time.h>
-
+#include <stdint.h>
 
 typedef struct __process__ Process;
 
-// Process id ,arrival time, execution time
 struct __process__{
-    int32_t pid;`
-    time_t a_time;
-    time_t e_time;
+    int32_t pid;
+    uint32_t a_time;// arrival time
+    uint32_t e_time;// execution time
+    uint32_t w_time; //wait time
+};
+
+Process createProcess(int32_t pid, uint32_t execution){
+    Process* p = (Process*) malloc(sizeof(Process));
+    p->pid = pid;
+    p->e_time = execution;
+    p->a_time = 0;
+    p->w_time = 0;
+    return *p;
 }
 
 #endif

@@ -5,6 +5,8 @@
 #ifndef DATA_TYPE_USED 
 #define DATA_TYPE_USED int32_t
 #endif
+#define STATUS_OK 1
+#define STATUS_FAIL 0
 
 typedef struct __result__ OprResult;
 
