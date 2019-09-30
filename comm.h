@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #ifndef DATA_TYPE_USED 
-#define DATA_TYPE_USED int32_t
+#define DATA_TYPE_USED void*
 #endif
 #define STATUS_OK 1
 #define STATUS_FAIL 0
