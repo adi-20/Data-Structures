@@ -5,7 +5,8 @@
     a. First Come First Serve
     b. Shortest Job First
 
-    To Compile : gcc supp/process.c ../Queue/queue.c 3.c 
+    To Compile : gcc supp/process.c ../Queue/queue.c 3.c -o Prob3
+    
 */
 #include <stdio.h>
 #include <assert.h>
