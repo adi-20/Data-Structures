@@ -24,7 +24,7 @@ struct _slist {
 
 /**	Public Declaration for coder     **/
 Slist new_list();
-uint32_t length(Slist *list);
+uint32_t length_slist(Slist *list);
 int32_t lookup(Slist * list,DATA_TYPE_USED data);
 Slist* add_head(Slist *list,DATA_TYPE_USED data);
 Slist* add_tail(Slist *list,DATA_TYPE_USED data);

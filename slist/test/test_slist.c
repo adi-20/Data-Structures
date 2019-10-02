@@ -3,6 +3,8 @@
 #include <stddef.h>
 #include <stdio.h> //Just for debugging
 
+// To compile : gcc -Wall -D DATA_TYPE_USED=int test_slist.c ../slist.c 
+
 // To add c file from command line is prefered -- need to check stackoverflow?
 // #include "slist.c"
 void test_create(){

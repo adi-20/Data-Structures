@@ -13,7 +13,7 @@ Slist new_list(){
 	s->head = NULL;
 	s->tail = NULL;
 	s->length = 0;
-	s->SLIST_STATUS = SLIST_OK;
+	s->SLIST_STATUS = STATUS_OK;
 	return *s;
 }
 Node* create_node(DATA_TYPE_USED data,Node* ptr){
@@ -22,12 +22,12 @@ Node* create_node(DATA_TYPE_USED data,Node* ptr){
 	node->next = ptr;
 	return node;
 }
-OprResult* create_result(int32_t status){
+static OprResult* create_result(int32_t status){
 	OprResult* res = (OprResult*) malloc(sizeof(OprResult));
 	res->status = status;
 	return res;
 }
-uint32_t length(Slist *list){
+uint32_t length_slist(Slist *list){
 	return list->length;
 }
 
@@ -91,7 +91,7 @@ Slist* add_tail(Slist *list,DATA_TYPE_USED data){
 OprResult* delete_tail(Slist *list){
 	assert(list!=NULL);
 	Node *lstNode = list->tail;
-	OprResult* res = create_result(SLIST_FAIL);
+	OprResult* res = create_result(STATUS_FAIL);
 	if(list->length!=0){
 		if(list->head != list->tail){
 			Node* tmp = list->head;
@@ -106,19 +106,19 @@ OprResult* delete_tail(Slist *list){
 			list->head = NULL;
 		}
 		res->data= lstNode->data;
-		res->status = SLIST_OK;
+		res->status = STATUS_OK;
 		free(lstNode);
 		list->length--;
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else{
-		res->status = SLIST_FAIL;
+		res->status = STATUS_FAIL;
 	}
 	return res;
 }
 
 OprResult* delete_head(Slist *list){
 	assert(list!=NULL);
-	OprResult* res = create_result(SLIST_FAIL);
+	OprResult* res = create_result(STATUS_FAIL);
 	if(list->head!=NULL){
 		Node* tmp = list->head;
 		Node* h_node = list->head;
@@ -128,7 +128,7 @@ OprResult* delete_head(Slist *list){
 			list->tail = NULL;
 		}
 		res->data = h_node->data;
-		res->status = SLIST_OK;
+		res->status = STATUS_OK;
 		free(h_node);
 		list->length--;
 	}
@@ -137,7 +137,7 @@ OprResult* delete_head(Slist *list){
 
 DATA_TYPE_USED max_list(Slist *list){
 	assert(list!=NULL);
-	DATA_TYPE_USED max=-1;
+	DATA_TYPE_USED max=(DATA_TYPE_USED)-1;
 	if(list->head!=NULL){
 		max = list->head->data;
 		Node* tmp = list->head->next;
@@ -147,16 +147,16 @@ DATA_TYPE_USED max_list(Slist *list){
 			}
 			tmp = tmp->next;
 		}
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else{
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return max;
 }
 
 DATA_TYPE_USED min_list(Slist *list){
 	assert(list!=NULL);
-	DATA_TYPE_USED min = -1;
+	DATA_TYPE_USED min =(DATA_TYPE_USED) -1;
 	if(list->head!=NULL){
 		min = list->head->data;
 		Node* tmp = list->head->next;
@@ -166,9 +166,9 @@ DATA_TYPE_USED min_list(Slist *list){
 			}
 			tmp = tmp->next;
 		}
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else{
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return min;
 }
@@ -177,7 +177,7 @@ Slist* add_after(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after_data){
 	int count = -1;
 	if(list->head != NULL){
 		count = 0;
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 		Node* tmp = list->head;
 		while(tmp!=NULL){
 			if(tmp->data == after_data){
@@ -187,26 +187,26 @@ Slist* add_after(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after_data){
 				// node->next = tmp->next;
 				tmp->next = node;
 				list->length++;
-				list->SLIST_STATUS = SLIST_OK;
+				list->SLIST_STATUS = STATUS_OK;
 				break;
 			}
 			count++;
 			tmp = tmp->next;
 		}
 		if(count == list->length){
-			list->SLIST_STATUS=SLIST_FAIL;
+			list->SLIST_STATUS=STATUS_FAIL;
 			count = -1;
 		}
 	}
 	else{
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return list;
 }
 
 OprResult* delete_node(Slist* list, DATA_TYPE_USED data){
 	assert(list!=NULL);
-	OprResult* res = create_result(SLIST_FAIL);
+	OprResult* res = create_result(STATUS_FAIL);
 	if(list->head!= NULL){
 		if(list->head != list->tail){
 			Node* prev = NULL;
@@ -223,7 +223,7 @@ OprResult* delete_node(Slist* list, DATA_TYPE_USED data){
 						prev->next = curr->next;
 					}
 					res->data = curr->data;
-					res->status = SLIST_OK;
+					res->status = STATUS_OK;
 					free(curr);
 					list->length--;
 					break;
@@ -232,11 +232,11 @@ OprResult* delete_node(Slist* list, DATA_TYPE_USED data){
 				curr = curr->next;
 			}
 			if(curr==list->tail){
-				res->status = SLIST_FAIL;
+				res->status = STATUS_FAIL;
 			}
 		}else{
 			if(list->head->data==data){
-				res->status = SLIST_OK;
+				res->status = STATUS_OK;
 				list->head = NULL;
 				list->tail = NULL;
 			}
@@ -285,7 +285,7 @@ uint32_t list_equal(Slist* list1,Slist* list2){
 	uint32_t flag = 1;
 	if(list1==NULL && list2== NULL){
 		flag = 1;
-	}else if(length(list1)==length(list2)){
+	}else if(length_slist(list1)==length_slist(list2)){
 		Node* n1=list1->head;
 		Node* n2=list2->head;
 		for(int i = 0;i<list1->length;i++){
@@ -326,7 +326,7 @@ Slist* list_intersection(Slist* list1,Slist* list2){
 	Slist *r_list = &slist;
 	for(Node* curr=list1->head;curr!=NULL;curr=curr->next){
 		if(lookup(list2,curr->data)!=-1){
-		int32_t data = curr->data;
+		DATA_TYPE_USED data = curr->data;
 		r_list = add_tail_nexist(r_list,data);
 		}
 	}
@@ -340,9 +340,9 @@ Slist* add_head_nexist(Slist* list,DATA_TYPE_USED data){
 	// you should not add it again.
 	if(lookup(list,data)==-1){
 		list = add_head(list,data);
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else {
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return list;
 }
@@ -353,9 +353,9 @@ Slist* add_tail_nexist(Slist* list,DATA_TYPE_USED data){
 	// you should not add it again.
 	if(lookup(list,data)==-1){
 		list = add_tail(list,data);
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else {
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return list;
 }
@@ -366,9 +366,9 @@ Slist* add_after_nexist(Slist* list,DATA_TYPE_USED data,DATA_TYPE_USED after){
 	// you should not add it again.
 	if(lookup(list,data)==-1){
 		list = add_after(list,data,after);
-		list->SLIST_STATUS = SLIST_OK;
+		list->SLIST_STATUS = STATUS_OK;
 	}else {
-		list->SLIST_STATUS = SLIST_FAIL;
+		list->SLIST_STATUS = STATUS_FAIL;
 	}
 	return list;
 }

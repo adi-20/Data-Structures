@@ -1,5 +1,5 @@
 #include<stdlib.h>
-
+#include<stdio.h>
 #include "../slist/slist.h"
 #include "stack.h"
 
@@ -18,7 +18,9 @@ OprResult* push(Stack* list,DATA_TYPE_USED data){
 }
 
 OprResult* pop(Stack* list){
-	return delete_head(list);
+	OprResult* res = delete_head(list);
+	// printf("Result returning status :%d",res->status);
+	return res;
 }
 
 OprResult* peek(Stack *list){

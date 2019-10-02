@@ -17,7 +17,7 @@ Queue* create_queue(uint32_t size){
 	return q;
 }
 
-OprResult* create_result(uint32_t status){
+static OprResult* create_result(uint32_t status){
 	OprResult* res = (OprResult*) malloc(sizeof(OprResult));
 	res->status = status;
 	return res;
