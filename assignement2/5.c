@@ -4,7 +4,7 @@
     constraint that your algorithm must return the elements back to S in their original order. 
     You may use S, Q and a constant number of other variables.
 
-    compile : gcc ../stack/s_ll.c ../Queue/queue.h 5.c -o prog5
+    compile : gcc ../slist/slist.c ../stack/s_ll.c ../Queue/queue.c 5.c
 */
 
 #include<stdio.h>
@@ -21,16 +21,13 @@ OprResult* search_elements(Stack* s,DATA_TYPE_USED data){
     OprResult* finalRes = (OprResult*) malloc(sizeof(OprResult));
     finalRes->status = STATUS_FAIL;
     OprResult* res = NULL;
-    
+    // printf("ajith%d",res->status);
     while(s->length!=0){
-
         res = pop(s);
-        printf("\nReceived Result status :%d\n",res->status);
-        printf("Hello: 1\n");
+       printf("\nReceived Result status :%d\n",res->status);
         printf("in Stack pop: %d\n",res->data);
         
-        if(res->data == data){
-            printf("Hello: break\n");
+        if(res->status==STATUS_OK && res->data == data){
             finalRes->data = res->data;
             finalRes->status = STATUS_OK;
             push(s,res->data);
@@ -38,7 +35,6 @@ OprResult* search_elements(Stack* s,DATA_TYPE_USED data){
         }
         add(q,res->data);
     }
-    printf("Hello: 2\n");
     res=NULL;
     while(res==NULL || res->status != STATUS_FAIL){
         for (int i =0;i<length(q)-1;i++){

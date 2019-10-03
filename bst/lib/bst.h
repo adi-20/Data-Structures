@@ -22,7 +22,7 @@ struct __bst__{
 BST* create_bst();
 uint32_t length(BST* list);
 OprResult* search_ele(BST* list,DATA_TYPE_USED data);
-OprResult* add(BST* list,DATA_TYPE_USED data);
+OprResult add(BST* list,DATA_TYPE_USED data);
 OprResult* delete(BST* list);
 
 
