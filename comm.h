@@ -2,7 +2,7 @@
 #define _COMMON_FUNC_
 #include <stdint.h>
 
-#ifndef DATA_TYPE_USED 
+#ifndef DATA_TYPE_USED
 #define DATA_TYPE_USED void*
 #endif
 #define STATUS_OK 1

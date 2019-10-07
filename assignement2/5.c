@@ -4,12 +4,11 @@
     constraint that your algorithm must return the elements back to S in their original order. 
     You may use S, Q and a constant number of other variables.
 
-    compile : gcc ../slist/slist.c ../stack/s_ll.c ../Queue/queue.c 5.c
+    compile : gcc -Wall -D DATA_TYPE_USED=int ../slist/slist.c ../stack/s_ll.c ../Queue/queue.c 5.c
 */
 
 #include<stdio.h>
 #include <stdlib.h>
-#define DATA_TYPE_USED int
 #include<assert.h>
 
 #include "../comm.h"
@@ -24,8 +23,6 @@ OprResult* search_elements(Stack* s,DATA_TYPE_USED data){
     // printf("ajith%d",res->status);
     while(s->length!=0){
         res = pop(s);
-       printf("\nReceived Result status :%d\n",res->status);
-        printf("in Stack pop: %d\n",res->data);
         
         if(res->status==STATUS_OK && res->data == data){
             finalRes->data = res->data;
@@ -36,7 +33,7 @@ OprResult* search_elements(Stack* s,DATA_TYPE_USED data){
         add(q,res->data);
     }
     res=NULL;
-    while(res==NULL || res->status != STATUS_FAIL){
+    while(q->length!=0){
         for (int i =0;i<length(q)-1;i++){
             res = delete(q);
             add(q,res->data);    
@@ -55,11 +52,14 @@ int main(int c, char** v){
     push(stck,10);
     push(stck,20);
     push(stck,30);
-    printf("\nHello Main\n");
     OprResult* res = search_elements(stck,10);
     assert(res->status==STATUS_OK);
-    printf("\nStatus : %d\n",res->status);
+    assert(res->data==10);
     res = peek(stck);
+    assert(res->status==STATUS_OK);
+    assert(res->data==10);
+    res = search_elements(stck,100);
+    assert(res->status==STATUS_FAIL);
 
 }
 

@@ -18,9 +18,7 @@ OprResult* push(Stack* list,DATA_TYPE_USED data){
 }
 
 OprResult* pop(Stack* list){
-	OprResult* res = delete_head(list);
-	printf("Result returning status :%d",res->status);
-	return res;
+	return delete_head(list);;
 }
 
 OprResult* peek(Stack *list){

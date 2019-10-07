@@ -50,9 +50,7 @@ OprResult* delete(Queue* q){
 	}else{
 		DATA_TYPE_USED data = q->data[q->bottom];
 		q->length--;
-		int bottom = q->bottom;
 		q->bottom = (q->bottom+1)%(q->size);
-		assert(bottom!=q->bottom);
 		res = create_result(STATUS_OK);
 		res->data = data;
 	}

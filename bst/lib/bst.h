@@ -8,9 +8,10 @@ typedef struct __node__ Node;
 typedef struct __bst__ BST;
 
 struct __node__{
-	Node* prev;
+	Node* left;
 	DATA_TYPE_USED data;
-	Node* next;
+	Node* right;
+	int32_t status;
 };
 
 struct __bst__{
@@ -22,8 +23,12 @@ struct __bst__{
 BST* create_bst();
 uint32_t length(BST* list);
 OprResult* search_ele(BST* list,DATA_TYPE_USED data);
-OprResult add(BST* list,DATA_TYPE_USED data);
-OprResult* delete(BST* list);
+OprResult* add(BST* list,DATA_TYPE_USED data);
+OprResult* delete(BST* list,DATA_TYPE_USED data);
+void in_order(BST* bst);
+void pre_order(BST* bst);
+void post_order(BST* bst);
+void level_order(BST* bst);
 
 
 #endif
