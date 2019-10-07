@@ -34,10 +34,10 @@ struct __bst__{
 
 // Defining methods for double linked list
 BST* create_bst();
-uint32_t length(BST* list);
-OprResult* search_ele(BST* list,NODE_DATA_TYPE_USED data);
-OprResult* add(BST* list,NODE_DATA_TYPE_USED data);
-OprResult* delete(BST* list,NODE_DATA_TYPE_USED data);
+uint32_t length_bst(BST* list);
+OprResult* search_ele_bst(BST* list,NODE_DATA_TYPE_USED data);
+OprResult* add_bst(BST* list,NODE_DATA_TYPE_USED data);
+OprResult* delete_bst(BST* list,NODE_DATA_TYPE_USED data);
 void in_order(BST* bst);
 void pre_order(BST* bst);
 void post_order(BST* bst);

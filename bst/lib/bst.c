@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "bst.h"
+#include "../../Queue/queue.h"
 
 // An intermediate result while adding node
 typedef struct node_res NodeRes;
@@ -20,11 +21,11 @@ BST* create_bst(){
 	return bst;
 }
 
-uint32_t length(BST* bst){
+uint32_t length_bst(BST* bst){
 	return bst->length;
 }
 
-OprResult* create_result(Node* data,int32_t status){
+static OprResult* create_result(Node* data,int32_t status){
 	OprResult * res = (OprResult*) malloc(sizeof(OprResult));
 	res->data = data;
 	res->status = status;
@@ -66,7 +67,7 @@ static NodeRes add_node(Node* node,NODE_DATA_TYPE_USED data,OprResult* res){
 	return returnNode;
 }
 
-OprResult* add(BST* bst,NODE_DATA_TYPE_USED data) {
+OprResult* add_bst(BST* bst,NODE_DATA_TYPE_USED data) {
 	OprResult* res = create_result(NULL,STATUS_FAIL);
 	NodeRes nodeRes = add_node(bst->root, data, res);
 	bst->root = nodeRes.node;
@@ -78,7 +79,7 @@ OprResult* add(BST* bst,NODE_DATA_TYPE_USED data) {
 	return res;
 }
 
-OprResult* search_ele(BST* bst,NODE_DATA_TYPE_USED data){
+OprResult* search_ele_bst(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
 	while(node!=NULL){
@@ -110,7 +111,7 @@ static Node* find_least(Node* node,int remPrntLnk){
 	return node;
 }
 
-OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
+OprResult* delete_bst(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
 	Node* prntNde = NULL;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
@@ -171,7 +172,18 @@ static void print_post_order(Node* node){
 		printf(" %d ",node->data);
 	}
 }
-static void print_level_order(Node* node){
+static void print_level_order(Queue* queue){
+	while(queue->length!=0){
+		OprResult* res = delete(queue);
+		Node* node = res->data;
+		printf(" %d ",node->data);
+		if(node->left!=NULL){
+			add(queue,node->left);
+		}
+		if(node->right!=NULL){
+			add(queue,node->right);
+		}
+	}
 	
 }
 void in_order(BST* bst){
@@ -188,6 +200,8 @@ void post_order(BST* bst){
 	printf("\n");
 }
 void level_order(BST* bst){
-	print_level_order(bst->root);
+	Queue* queue =  create_queue(bst->length);
+	add(queue,bst->root);
+	print_level_order(queue);
 	printf("\n");
 }
