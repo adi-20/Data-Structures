@@ -205,3 +205,50 @@ void level_order(BST* bst){
 	print_level_order(queue);
 	printf("\n");
 }
+
+static int find_height(Node* node, int myHeight){
+	if(node!=NULL){
+		int height1 = find_height(node->left,myHeight+1);
+		int height2 = find_height(node->right,myHeight+1);
+		
+		myHeight = height1>height2?height1:height2;
+	}
+	return myHeight;
+}
+
+int height_bst(BST* bst){
+	if(bst->root==NULL){
+		return 0;
+	}else{
+		return find_height(bst->root,0);
+	}
+	
+}
+
+OprResult* min_bst(BST* bst){
+	assert(bst!=NULL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
+	Node* node = bst->root;
+	if(node!=NULL){
+		while(node->left!=NULL){
+			node = node->left;
+		}
+		res->data = node;
+		res->status = STATUS_OK;
+	}
+	return res;
+}
+
+OprResult* max_bst(BST* bst){
+	assert(bst!=NULL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
+	Node* node = bst->root;
+	if(node!=NULL){
+		while(node->right!=NULL){
+			node = node->right;
+		}
+		res->data = node;
+		res->status = STATUS_OK;
+	}
+	return res;
+}

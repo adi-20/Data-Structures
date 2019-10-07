@@ -42,5 +42,8 @@ void in_order(BST* bst);
 void pre_order(BST* bst);
 void post_order(BST* bst);
 void level_order(BST* bst);
+int height_bst(BST* bst);
+OprResult* max_bst(BST* bst);
+OprResult* min_bst(BST* bst);
 
 #endif
