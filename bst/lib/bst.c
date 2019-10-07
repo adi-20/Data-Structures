@@ -24,60 +24,66 @@ uint32_t length(BST* bst){
 	return bst->length;
 }
 
-OprResult* create_result(DATA_TYPE_USED data,int32_t status){
+OprResult* create_result(Node* data,int32_t status){
 	OprResult * res = (OprResult*) malloc(sizeof(OprResult));
 	res->data = data;
 	res->status = status;
 	return res;
 }
 
-Node* create_node(DATA_TYPE_USED data,Node* left,Node* right){
+Node* create_node(NODE_DATA_TYPE_USED data,Node* left,Node* right){
 	Node* node = (Node*) malloc(sizeof(Node));
 	node->left = left;
 	node->data = data;
 	node->right = right;
 	return node;
 }
-static NodeRes add_node(Node* node,DATA_TYPE_USED data){
+static NodeRes add_node(Node* node,NODE_DATA_TYPE_USED data,OprResult* res){
 	NodeRes returnNode={NULL,STATUS_FAIL};
 	if(node==NULL){
 		returnNode.node =  create_node(data,NULL,NULL);
+		res->data = returnNode.node;
 		returnNode.status = STATUS_OK;
 	}else{
 		if(data > node->data){
-			returnNode = add_node(node->right,data);
+			returnNode = add_node(node->right,data,res);
 			node->right = returnNode.node;
 			
 		}else if(data < node->data){
-			returnNode = add_node(node->left,data);
+			returnNode = add_node(node->left,data,res);
 			node->left = returnNode.node;
+			// if(data==5) printf("\nHello wold-tango\n");
 		}else{
+			// if(data==5) printf("\nHello wold3\n");
 			assert(node->data==data);
 			assert(returnNode.status == STATUS_FAIL);
+			assert(res!=NULL);
+			assert(res->status == STATUS_FAIL);
+			
 		}
 		returnNode.node = node;
 	}
 	return returnNode;
 }
 
-OprResult* add(BST* bst,DATA_TYPE_USED data){
-	OprResult* res = create_result(data,STATUS_FAIL);
-	NodeRes nodeRes = add_node(bst->root,data);
+OprResult* add(BST* bst,NODE_DATA_TYPE_USED data) {
+	OprResult* res = create_result(NULL,STATUS_FAIL);
+	NodeRes nodeRes = add_node(bst->root, data, res);
 	bst->root = nodeRes.node;
 	res->status = nodeRes.status;
 	if(res->status == STATUS_OK){
 		bst->length++;
 	}
-	res->data = data;
+	// res->data = nodeRes.node;
 	return res;
 }
 
-OprResult* search_ele(BST* bst,DATA_TYPE_USED data){
+OprResult* search_ele(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
-	OprResult* res = create_result(data,STATUS_FAIL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
 	while(node!=NULL){
 		if(node->data == data){
-			res->data = node->data;
+			res->data = node;
 			res->status = STATUS_OK;
 			break;
 		}else if(data>node->data){
@@ -104,13 +110,13 @@ static Node* find_least(Node* node,int remPrntLnk){
 	return node;
 }
 
-OprResult* delete(BST* bst,DATA_TYPE_USED data){
+OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
 	Node* prntNde = NULL;
-	OprResult* res = create_result(data,STATUS_FAIL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
 	while(node!=NULL){
 		if(node->data == data){
-			res->data = node->data;
+			res->data = create_node(node->data,NULL,NULL);
 			if(node->right==NULL){
 				if(prntNde->left==node){
 					prntNde->left = node->left;
