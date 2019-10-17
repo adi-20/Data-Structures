@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "bst.h"
-#include "../Queue/queue.h"
+#include "../../Queue/queue.h"
 
 // An intermediate result while adding node
 typedef struct node_res NodeRes;
@@ -21,11 +21,11 @@ BST* create_bst(){
 	return bst;
 }
 
-uint32_t length(BST* bst){
+uint32_t length_bst(BST* bst){
 	return bst->length;
 }
 
-OprResult* create_result(Node* data,int32_t status){
+static OprResult* create_result(Node* data,int32_t status){
 	OprResult * res = (OprResult*) malloc(sizeof(OprResult));
 	res->data = data;
 	res->status = status;
@@ -67,7 +67,7 @@ static NodeRes add_node(Node* node,NODE_DATA_TYPE_USED data,OprResult* res){
 	return returnNode;
 }
 
-OprResult* add(BST* bst,NODE_DATA_TYPE_USED data) {
+OprResult* add_bst(BST* bst,NODE_DATA_TYPE_USED data) {
 	OprResult* res = create_result(NULL,STATUS_FAIL);
 	NodeRes nodeRes = add_node(bst->root, data, res);
 	bst->root = nodeRes.node;
@@ -79,7 +79,7 @@ OprResult* add(BST* bst,NODE_DATA_TYPE_USED data) {
 	return res;
 }
 
-OprResult* search_ele(BST* bst,NODE_DATA_TYPE_USED data){
+OprResult* search_ele_bst(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
 	while(node!=NULL){
@@ -111,11 +111,15 @@ static Node* find_least(Node* node,int remPrntLnk){
 	return node;
 }
 
+<<<<<<< HEAD
 /**
  * Issue in delete please donot refer  
  * 
  */
 OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
+=======
+OprResult* delete_bst(BST* bst,NODE_DATA_TYPE_USED data){
+>>>>>>> c7d9072828c9e68ce15b07bfa0eab9ab08bf3d48
 	Node* node = bst->root;
 	Node* prntNde = NULL;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
@@ -180,8 +184,23 @@ static void print_post_order(Node* node){
 		printf(" %d ",node->data);
 	}
 }
+<<<<<<< HEAD
 static void print_level_order(Node* node){
 
+=======
+static void print_level_order(Queue* queue){
+	while(queue->length!=0){
+		OprResult* res = delete(queue);
+		Node* node = res->data;
+		printf(" %d ",node->data);
+		if(node->left!=NULL){
+			add(queue,node->left);
+		}
+		if(node->right!=NULL){
+			add(queue,node->right);
+		}
+	}
+>>>>>>> c7d9072828c9e68ce15b07bfa0eab9ab08bf3d48
 	
 }
 
@@ -199,6 +218,55 @@ void post_order(BST* bst){
 	printf("\n");
 }
 void level_order(BST* bst){
-	print_level_order(bst->root);
+	Queue* queue =  create_queue(bst->length);
+	add(queue,bst->root);
+	print_level_order(queue);
 	printf("\n");
+}
+
+static int find_height(Node* node, int myHeight){
+	if(node!=NULL){
+		int height1 = find_height(node->left,myHeight+1);
+		int height2 = find_height(node->right,myHeight+1);
+		
+		myHeight = height1>height2?height1:height2;
+	}
+	return myHeight;
+}
+
+int height_bst(BST* bst){
+	if(bst->root==NULL){
+		return 0;
+	}else{
+		return find_height(bst->root,0);
+	}
+	
+}
+
+OprResult* min_bst(BST* bst){
+	assert(bst!=NULL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
+	Node* node = bst->root;
+	if(node!=NULL){
+		while(node->left!=NULL){
+			node = node->left;
+		}
+		res->data = node;
+		res->status = STATUS_OK;
+	}
+	return res;
+}
+
+OprResult* max_bst(BST* bst){
+	assert(bst!=NULL);
+	OprResult* res = create_result(NULL,STATUS_FAIL);
+	Node* node = bst->root;
+	if(node!=NULL){
+		while(node->right!=NULL){
+			node = node->right;
+		}
+		res->data = node;
+		res->status = STATUS_OK;
+	}
+	return res;
 }
