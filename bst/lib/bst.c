@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "bst.h"
+#include "../Queue/queue.h"
 
 // An intermediate result while adding node
 typedef struct node_res NodeRes;
@@ -110,13 +111,17 @@ static Node* find_least(Node* node,int remPrntLnk){
 	return node;
 }
 
+/**
+ * Issue in delete please donot refer  
+ * 
+ */
 OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
 	Node* node = bst->root;
 	Node* prntNde = NULL;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
+	res->data = create_node(node->data,NULL,NULL);
 	while(node!=NULL){
 		if(node->data == data){
-			res->data = create_node(node->data,NULL,NULL);
 			if(node->right==NULL){
 				if(prntNde->left==node){
 					prntNde->left = node->left;
@@ -124,6 +129,7 @@ OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
 					prntNde->right = node->left;
 				}
 				free(node);
+				break;
 			}else if(node->left==NULL){
 				if(prntNde->left==node){
 					prntNde->left = node->right;
@@ -131,14 +137,17 @@ OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
 					prntNde->right = node->right;
 				}
 				free(node);
+				break;
 			}else{
 				Node* tmp = find_least(node->right,1);
 				node->data = tmp->data;
-				free(tmp);
+
+				//asking to delete the min element in right subtree
+				node=node->right;
+				data = tmp->data;
 			}
 			res->status = STATUS_OK;
 			bst->length--;
-			break;
 		}else if(data>node->data){
 			prntNde = node;
 			node = node->right;
@@ -172,8 +181,10 @@ static void print_post_order(Node* node){
 	}
 }
 static void print_level_order(Node* node){
+
 	
 }
+
 void in_order(BST* bst){
 	print_in_order(bst->root);
 	printf("\n");
