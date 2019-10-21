@@ -2,17 +2,18 @@
 #define _HASH_NS7_
 #include <stdint.h>
 
-typedef struct _node_link_ List;
+typedef struct _node_link_ Link;
 typedef struct _hash_table_ HashTable;
 
 struct _node_link_ {
     char data[50];
-    List *next;
+    Link *next;
 };
 
 struct _hash_table_ {
     uint32_t size;
-    List **addr_list;
+    Link **addr_list;
+    uint32_t no_elements;
 };
 
 HashTable hashtable_new(uint32_t size);
