@@ -4,7 +4,7 @@
 
 /**
  * 
- *  To Compile gcc -D DATA_TYPE_USED=int main.c ./lib/graph.c ../Queue/queue.c
+ *  To Compile : gcc -D DATA_TYPE_USED=int main.c ./lib/graph.c ../Queue/queue.c
 **/
 void check_create(){
     Graph g = graph_new(4);
@@ -17,7 +17,10 @@ void check_create(){
 }
 
 void check_all(){
-    Graph g = graph_new(4);
+    int size;
+    printf("Enter size : ");
+    scanf("%d",&size);
+    Graph g = graph_new(size);
     Graph *grp =  &g;
     grp = graph_adjacency_list(grp);
     printf("DFS : ");

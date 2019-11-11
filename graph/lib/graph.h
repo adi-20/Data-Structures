@@ -5,11 +5,15 @@
 #define FALSE 0
 #include <stdint.h>
 
+#ifndef DATA_TYPE_USED
+#define DATA_TYPE_USED int
+#endif
+
 uint32_t visited[MAX];
 typedef struct _node_ Node;
 typedef struct _graph_ Graph;
 struct _node_ {
-    int32_t node_id;
+    DATA_TYPE_USED node_id;
     Node *next;
 };
 
