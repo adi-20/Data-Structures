@@ -104,26 +104,18 @@ static Node* find_least(Node* node,int remPrntLnk){
 			prev = node;
 			node = node->left;
 		}
-		if(prev!=NULL && remPrntLnk ==1){
+		if(prev!=NULL && remPrntLnk == 1){
 			prev->left = NULL;
 		}
 	}
 	return node;
 }
 
-<<<<<<< HEAD
-/**
- * Issue in delete please donot refer  
- * 
- */
-OprResult* delete(BST* bst,NODE_DATA_TYPE_USED data){
-=======
 OprResult* delete_bst(BST* bst,NODE_DATA_TYPE_USED data){
->>>>>>> c7d9072828c9e68ce15b07bfa0eab9ab08bf3d48
 	Node* node = bst->root;
 	Node* prntNde = NULL;
 	OprResult* res = create_result(NULL,STATUS_FAIL);
-	res->data = create_node(node->data,NULL,NULL);
+	res->data = create_node(data,NULL,NULL);
 	while(node!=NULL){
 		if(node->data == data){
 			if(node->right==NULL){
@@ -132,7 +124,9 @@ OprResult* delete_bst(BST* bst,NODE_DATA_TYPE_USED data){
 				}else{
 					prntNde->right = node->left;
 				}
+				res->status = STATUS_OK;
 				free(node);
+				bst->length--;
 				break;
 			}else if(node->left==NULL){
 				if(prntNde->left==node){
@@ -140,18 +134,17 @@ OprResult* delete_bst(BST* bst,NODE_DATA_TYPE_USED data){
 				}else{
 					prntNde->right = node->right;
 				}
+				res->status = STATUS_OK;
 				free(node);
+				bst->length--;
 				break;
 			}else{
-				Node* tmp = find_least(node->right,1);
+				Node* tmp = find_least(node->right,0);
 				node->data = tmp->data;
-
 				//asking to delete the min element in right subtree
 				node=node->right;
 				data = tmp->data;
 			}
-			res->status = STATUS_OK;
-			bst->length--;
 		}else if(data>node->data){
 			prntNde = node;
 			node = node->right;
@@ -184,10 +177,7 @@ static void print_post_order(Node* node){
 		printf(" %d ",node->data);
 	}
 }
-<<<<<<< HEAD
-static void print_level_order(Node* node){
 
-=======
 static void print_level_order(Queue* queue){
 	while(queue->length!=0){
 		OprResult* res = delete(queue);
@@ -200,8 +190,6 @@ static void print_level_order(Queue* queue){
 			add(queue,node->right);
 		}
 	}
->>>>>>> c7d9072828c9e68ce15b07bfa0eab9ab08bf3d48
-	
 }
 
 void in_order(BST* bst){
