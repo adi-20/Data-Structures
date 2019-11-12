@@ -18,7 +18,7 @@ HashTable hashtable_new(uint32_t size){
     return ht;
 }
 
-static int32_t _hash_code_(char *element){
+static int32_t _hash_code_(char element[]){
     int32_t number = 0;
     while(*element!='\0'){
         number =(number<<5)+ *element++;
@@ -33,7 +33,7 @@ static uint32_t _hash_(uint32_t size,char* element){
     return ( _compression_(size,num) );
 }
 
-uint32_t hashtable_lookup(HashTable *ht,char *element){
+uint32_t hashtable_lookup(HashTable *ht,char element[]){
     assert(ht!=NULL);
     // Retriving link of the hash code 
     Link *cur = ht->addr_list[_hash_(ht->size,element)];
@@ -52,7 +52,7 @@ uint32_t hashtable_lookup(HashTable *ht,char *element){
     return cur!=NULL;
 }
 
-HashTable* hashtable_add_key(HashTable *ht,char *element){
+HashTable* hashtable_add_key(HashTable *ht,char element[]){
     assert(ht!=NULL);
     uint32_t bucket = _hash_(ht->size,element);
     if(!hashtable_lookup(ht,element)){
@@ -65,7 +65,7 @@ HashTable* hashtable_add_key(HashTable *ht,char *element){
     return ht;
 }
 
-HashTable* hashtable_delete_key(HashTable *ht,char *element){
+HashTable* hashtable_delete_key(HashTable *ht,char element[]){
     assert(ht!=NULL);
     uint32_t bucket = _hash_(ht->size,element);
     Link* lnk = ht->addr_list[bucket];
