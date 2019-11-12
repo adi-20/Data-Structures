@@ -4,7 +4,7 @@
 #include "heap.h"
 
 void t_create_heap(){
-    int a[]={0, 1,5,2,4,6,3,9};
+    int a[]={0,1,5,2,4,6,3,9};
     Heap h= create_heap(a,2);
     assert(h.size==2);
     assert(h.data[0]==0);
