@@ -79,7 +79,7 @@ void __merge__(int *a,int low,int mid, int high){
     s_index = mid+1;
     
     int size_tmp = high-low+1;
-    int tmp[high-low+1];
+    int tmp[size_tmp];
     t_index = 0;
 
     
