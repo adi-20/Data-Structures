@@ -79,12 +79,6 @@ HashTable* hashtable_delete_key(HashTable *ht,char element[]){
 
     // Checking if element is identified
     if(lnk!=NULL){
-        // verifying if it is in first location
-        // if(lnk==prnt){
-        //     ht->addr_list[bucket] = lnk->next;
-        // }else{
-        //     prnt->next = lnk->next;
-        // }
         *prnt = lnk->next;
         free(lnk);
         ht->no_elements--;

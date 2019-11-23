@@ -53,14 +53,11 @@ static NodeRes add_node(Node* node,NODE_DATA_TYPE_USED data,OprResult* res){
 		}else if(data < node->data){
 			returnNode = add_node(node->left,data,res);
 			node->left = returnNode.node;
-			// if(data==5) printf("\nHello wold-tango\n");
 		}else{
-			// if(data==5) printf("\nHello wold3\n");
 			assert(node->data==data);
 			assert(returnNode.status == STATUS_FAIL);
 			assert(res!=NULL);
 			assert(res->status == STATUS_FAIL);
-			
 		}
 		returnNode.node = node;
 	}

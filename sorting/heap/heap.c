@@ -24,7 +24,7 @@ void __heapify__(int32_t *data,uint32_t size,int32_t parent){
     int32_t children = 2*parent;
     while(children<=size){
         // 1. Find the highest value of the children
-        if(data[children+1]>data[children]){
+        if(children+1<=size && data[children+1]>data[children]){
             children++;
         }
 
